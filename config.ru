@@ -3,15 +3,23 @@ require "redis"
 
 PROXYMAP_KEY = "ltproxmap"
 
-uri = URI.parse(ENV["REDIS_URL"]||ENV["REDISTOGO_URL"])
-REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+REDIS_URL=ENV["REDIS_URL"]||ENV["REDISTOGO_URL"]
+unless REDIS_URL.nil?
+  uri = URI.parse(REDIS_URL)
+  REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+end
 
 use Rack::ReverseProxy do
   reverse_proxy_options :preserve_host => false
   reverse_proxy /^(?!\/lpconfig)/, lambda { |env|
 
     rackreq = Rack::Request.new(env)
-    dest = REDIS.hget(PROXYMAP_KEY, rackreq.host) || REDIS.hget(PROXYMAP_KEY, rackreq.host_with_port)
+
+    dest = nil
+
+    unless REDIS_URL.nil?
+      dest = REDIS.hget(PROXYMAP_KEY, rackreq.host) || REDIS.hget(PROXYMAP_KEY, rackreq.host_with_port) 
+    end
 
     if dest.nil?
       dest = ENV["LP_DEFAULT_URL"]
@@ -36,8 +44,6 @@ use Rack::ReverseProxy do
     else
       URI.join(_url, path)
     end
-
-
 
   }
 end

@@ -10,6 +10,7 @@ get "/lpconfig" do
   content_type :json
   
   current_map = REDIS.hgetall PROXYMAP_KEY
+  current_map[:default] = ENV["LP_DEFAULT_URL"]
   current_map.to_json
 
 end
