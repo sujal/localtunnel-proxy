@@ -17,8 +17,10 @@ LP_SECRET=something
 
 The `LP_SECRET` and `REDIS_URL` are optional. Use them if you want to enable custom mappings for different hosts. For example, I use a single Heroku app instance for our app with multiple subdomains configured in Heroku for this. That way, I can do something like map: 
 
+````
 dev1.example.com => abcd.localtunnel.com
 dev2.example.com => efgh.localtunnel.com
+````
 
 and so on.
 
