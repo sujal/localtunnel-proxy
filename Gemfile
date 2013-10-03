@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.0.0'
+
 gem "sinatra"
 gem "json"
 gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy', :git => "https://github.com/sujal/rack-reverse-proxy.git"
