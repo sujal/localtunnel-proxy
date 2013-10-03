@@ -8,7 +8,7 @@ REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.passwor
 
 use Rack::ReverseProxy do
   reverse_proxy_options :preserve_host => false
-  reverse_proxy /^(?!/lpconfig)/, lambda { |env|
+  reverse_proxy /^(?!\/lpconfig)/, lambda { |env|
 
     rackreq = Rack::Request.new(env)
     dest = REDIS.hget(PROXYMAP_KEY, rackreq.host) || REDIS.hget(PROXYMAP_KEY, rackreq.host_with_port)
@@ -18,6 +18,18 @@ use Rack::ReverseProxy do
     end
 
     _url = dest
+    path = rackreq.fullpath
+    
+    # yes, performance stupidity... doesn't matter - this is for development
+    temp = URI(_url)
+
+    # we only support HTTP for now...
+    env["HTTP_HOST"] = if temp.port != 80
+      temp.host
+    else
+      "#{temp.host}:#{temp.port}"
+    end
+
     if _url =~ /\$\d/
       match_path(path).to_a.each_with_index { |m, i| _url.gsub!("$#{i.to_s}", m) }
       URI(_url)

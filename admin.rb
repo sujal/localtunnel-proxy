@@ -1,7 +1,11 @@
 require 'sinatra'
 require 'json'
 
+LP_SECRET=ENV["LP_SECRET"]
+
 get "/lpconfig" do 
+
+  raise Sinatra::NotFound unless params[:secret] == LP_SECRET
 
   content_type :json
   
@@ -12,16 +16,24 @@ end
 
 post "/lpconfig" do
 
+  raise Sinatra::NotFound unless params[:secret] == LP_SECRET
+
   REDIS.hset PROXYMAP_KEY, params[:host], params[:dest]
 
-  redirect_to "/lpconfig"
+  redirect to("/lpconfig")
 
 end
 
 delete "/lpconfig" do 
 
+  raise Sinatra::NotFound unless params[:secret] == LP_SECRET
+
   REDIS.hdel PROXYMAP_KEY, params[:host]
 
-  redirect_to "/lpconfig"
+  redirect to("/lpconfig")
 
+end
+
+not_found do
+  "Not Found"
 end
