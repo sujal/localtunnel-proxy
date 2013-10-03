@@ -30,8 +30,9 @@ and so on.
 
 There's one endpoint: `/lpconfig`. Depending on your HTTP Method, you'll list, set, or delete domain mappings:
 
-GET: it returns all the mappings it knows about, including the default.
-POST: send a `host` and `dest` param to map a different forwarding host for a given URL. For our dev1.example.com example above, you'd call the endpoint with a url encoded request body containing these values:
+__GET__: it returns all the mappings it knows about, including the default.
+
+__POST__: send a `host` and `dest` param to map a different forwarding host for a given URL. For our dev1.example.com example above, you'd call the endpoint with a url encoded request body containing these values:
 
 ````
 host=dev1.example.com
@@ -39,7 +40,7 @@ dest=http//abcd.localtunnel.com
 secret=something
 ````
 
-DELETE: include a `host` param to delete its mapping.
+__DELETE__: include a `host` param to delete its mapping.
 
 For all requests, you must pass in a `secret` param either in the POST body or query string. I think Sinatra is picky about this, but I honestly haven't tested it thoroughly (2 hour hack, after all).
 
