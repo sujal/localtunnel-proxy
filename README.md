@@ -2,7 +2,7 @@
 
 ## About
 
-A simple reverse proxy that I needed to forward requests to a localtunnel.com endpoint (see the [localtunnel project](http://progrium.com/localtunnel/) for more on that).
+A simple reverse proxy that I needed to forward requests to a SSH tunnel using the [localtunnel gem](http://progrium.com/localtunnel/).
 
 ## Usage
 
