@@ -20,7 +20,7 @@ post "/lpconfig" do
 
   REDIS.hset PROXYMAP_KEY, params[:host], params[:dest]
 
-  redirect to("/lpconfig")
+  redirect to("/lpconfig?secret=#{params[:secret]}")
 
 end
 
@@ -30,7 +30,7 @@ delete "/lpconfig" do
 
   REDIS.hdel PROXYMAP_KEY, params[:host]
 
-  redirect to("/lpconfig")
+  redirect to("/lpconfig?secret=#{params[:secret]}")
 
 end
 
