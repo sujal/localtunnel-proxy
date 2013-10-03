@@ -4,6 +4,8 @@
 
 A simple reverse proxy that I needed to forward requests to a SSH tunnel using the [localtunnel gem](http://progrium.com/localtunnel/).
 
+Install this app on Heroku, so you have a stable endpoint, then point things to that (Heroku) URL. (Maybe these things are app configurations, OAuth callbacks, stable URLs to show others your work).
+
 ## Usage
 
 You need to configure 3 environment variables in order to use this:
